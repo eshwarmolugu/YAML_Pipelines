@@ -6,7 +6,6 @@ stages:
   jobs:
   - job: "One"
     pool: server
-    dependsOn: 'Four'
     steps:   
     - task: InvokeRESTAPI@1
       inputs:
