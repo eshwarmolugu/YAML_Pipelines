@@ -4,7 +4,7 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 stages:
 - stage: SingleStage
   jobs:
-  - job: "One"
+  - job: "Four"
     steps:  
     - task: Delay@1
       inputs:
@@ -27,11 +27,11 @@ stages:
         script: |
           # Write your commands here
           echo 'Hello world'
-  - job: 'Four'
+  - job: 'One'
     dependsOn: 'Three'
     pool: server
     steps:
-     - task: InvokeRESTAPI@1
+    - task: InvokeRESTAPI@1
       inputs:
         connectionType: 'connectedServiceName'
         serviceConnection: 'ChangeControl_con'
