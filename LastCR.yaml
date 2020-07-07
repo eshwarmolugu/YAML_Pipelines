@@ -6,9 +6,12 @@ stages:
   jobs:
   - job: "Four"
     steps:  
-    - task: Delay@1
+    - task: Bash@3
       inputs:
-        delayForMinutes: '0'
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          echo 'Forth job ' 
   - job: "Two"
     steps:
     - task: Bash@3
@@ -43,7 +46,3 @@ stages:
               "branchName": "$(build.sourceBranchName)"
           }
         waitForCompletion: 'true'
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '3.6'
-        architecture: 'x64'
