@@ -4,7 +4,7 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 stages:
 - stage: Build
   jobs:
-  - job: "One"
+  - job: "NewOne"
     pool: server
     steps:   
     - task: InvokeRESTAPI@1
