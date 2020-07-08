@@ -7,18 +7,7 @@ stages:
   - job: "NewOne"
     pool: server
     steps:   
-    - task: InvokeRESTAPI@1
-      inputs:
-        connectionType: 'connectedServiceName'
-        serviceConnection: 'ChangeControl_con'
-        method: 'POST'
-        body: |
-          {
-              "buildNumber": "$(build.buildId)",
-              "isMultiBranch": "true",
-              "branchName": "$(build.sourceBranchName)"
-          }
-        waitForCompletion: 'true'
+
     - task: Delay@1
       inputs:
         delayForMinutes: '0'
