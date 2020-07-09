@@ -37,12 +37,12 @@ stages:
     - task: InvokeRESTAPI@1
       inputs:
         connectionType: 'connectedServiceName'
-        serviceConnection: 'ChangeControl_con'
+        serviceConnection: 'idc21_conn'
         method: 'POST'
         body: |
-          {
-              "buildNumber": "$(build.buildId)",
-              "isMultiBranch": "true",
-              "branchName": "$(build.sourceBranchName)"
-          }
+         {
+            "buildNumber": "$(build.buildId)",
+            "isMultiBranch": "true",
+            "branchName": "$(build.sourceBranchName)"
+                   }
         waitForCompletion: 'true'
