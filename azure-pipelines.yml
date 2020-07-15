@@ -31,14 +31,6 @@ stages:
           # Write your commands here
           echo 'Hello world'
 
-  
-  - job: 'django_basic'
-    pool:
-      vmImage: 'Ubuntu-16.04'
-    strategy:
-      matrix:
-        Python36:
-         python.version: '3.6'
-        Python37:
-          python.version: '3.7'
-      maxParallel: 2
+  - job: 'Four'
+    steps:
+      - 
