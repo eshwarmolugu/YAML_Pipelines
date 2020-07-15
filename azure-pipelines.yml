@@ -51,6 +51,7 @@ stages:
           }
         waitForCompletion: 'true'
   - job: 'django_basic'
+    dependsOn: 'Three'
   pool:
     vmImage: 'Ubuntu-16.04'
     strategy:
