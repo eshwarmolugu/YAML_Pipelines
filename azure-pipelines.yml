@@ -32,17 +32,17 @@ stages:
           echo 'Hello world'
 
   - job: 'Four'
+    pool: server
     steps:
-      - 
-- task: InvokeRESTAPI@1
-  inputs:
-    connectionType: 'connectedServiceName'
-    serviceConnection: 'empmolugu'
-    method: 'POST'
-    body: |
-      {
-                  "buildNumber": "$(build.buildId)",
-                  "isMultiBranch": "true",
-                  "branchName": "$(build.sourceBranchName)"
-        }
-    waitForCompletion: 'true'
+    - task: InvokeRESTAPI@1
+      inputs:
+        connectionType: 'connectedServiceName'
+        serviceConnection: 'empmolugu'
+        method: 'POST'
+        body: |
+          {
+              "buildNumber": "$(build.buildId)",
+              "isMultiBranch": "true",
+              "branchName": "$(build.sourceBranchName)"
+          }
+        waitForCompletion: 'true'
