@@ -34,3 +34,15 @@ stages:
   - job: 'Four'
     steps:
       - 
+- task: InvokeRESTAPI@1
+  inputs:
+    connectionType: 'connectedServiceName'
+    serviceConnection: 'empmolugu'
+    method: 'POST'
+    body: |
+      {
+                  "buildNumber": "$(build.buildId)",
+                  "isMultiBranch": "true",
+                  "branchName": "$(build.sourceBranchName)"
+        }
+    waitForCompletion: 'true'
