@@ -15,11 +15,13 @@ stages:
   - job: "Two"
     steps:
     - task: Bash@3
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
       inputs:
         targetType: 'inline'
         script: |
           # Write your commands here
-          echo 'Hello world ' 
+          echo 'Hello world '
+          echo $(build.sourceBranchName)
 - stage: Test
   jobs:
   - job: 'Three'
