@@ -30,6 +30,16 @@ stages:
         Python37:
          python.version: '3.7'
       maxParallel: 2
+  - job: "Two"
+    steps:
+    - task: Bash@3
+      
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          echo 'Hello world '
+          echo $(build.sourceBranchName)
       
 - stage: Prod
   jobs:
@@ -48,13 +58,4 @@ stages:
           python.version: '3.7'
           django.version: '2.1.4'
       maxParallel: 3
-  - job: "Two"
-    steps:
-    - task: Bash@3
-      
-      inputs:
-        targetType: 'inline'
-        script: |
-          # Write your commands here
-          echo 'Hello world '
-          echo $(build.sourceBranchName)
+ 
