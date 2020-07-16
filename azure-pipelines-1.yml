@@ -21,6 +21,7 @@ stages:
           }
         waitForCompletion: 'true'
   - job: 'django_basic'
+    dependsOn: 'Four'
     strategy:
       matrix:
         Python36:
@@ -29,6 +30,7 @@ stages:
          python.version: '3.7'
       maxParallel: 2
   - job: "Two"
+    dependsOn: 'Four'
     steps:
     - task: Bash@3
       
