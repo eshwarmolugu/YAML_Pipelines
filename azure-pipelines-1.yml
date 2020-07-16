@@ -20,6 +20,8 @@ stages:
               "branchName": "$(build.sourceBranchName)"
           }
         waitForCompletion: 'true'
+- stage: Deploy
+  jobs:
   - job: 'django_basic'
     strategy:
       matrix:
