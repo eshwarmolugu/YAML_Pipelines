@@ -21,17 +21,10 @@ stages:
           }
         waitForCompletion: 'true'
   - job: 'django_basic'
-  pool:
-    vmImage: 'Ubuntu-16.04'
     strategy:
-    matrix:
-      Python36_Django213:
-        python.version: '3.6'
-        django.version: '2.1.3'
-      Python37_Django213:
-        python.version: '3.7'
-        django.version: '2.1.3'
-      Python37_Django214:
-        python.version: '3.7'
-        django.version: '2.1.4'
-    maxParallel: 3
+      matrix:
+        Python36:
+          python.version: '3.6'
+        Python37:
+         python.version: '3.7'
+      maxParallel: 2
