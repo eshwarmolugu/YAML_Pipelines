@@ -34,7 +34,7 @@ stages:
           echo 'Hello world'
 
   - job: 'Four'
-    dependsOn: 'Three'
+    dependsOn: 'Two'
     pool: server
     steps:
     - task: InvokeRESTAPI@1
