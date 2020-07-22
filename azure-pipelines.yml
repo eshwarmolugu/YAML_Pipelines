@@ -12,7 +12,7 @@ stages:
         script: |
           # Write your commands here
           echo 'First job ' 
-  - job: "One"
+  - job: "Two"
     steps:
     - task: Bash@3
       
@@ -24,7 +24,7 @@ stages:
           echo $(build.sourceBranchName)
 - stage: Test
   jobs:
-  - job: 'Three'
+  - job: 'One'
     steps:
     - task: Bash@3
       inputs:
