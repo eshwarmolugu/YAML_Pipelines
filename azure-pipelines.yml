@@ -22,6 +22,18 @@ stages:
           # Write your commands here
           echo 'Hello world '
           echo $(build.sourceBranchName)
+- stage: Build
+  jobs:
+  - job: "Two"
+    steps:
+    - task: Bash@3
+      
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          echo 'Hello world '
+          echo $(build.sourceBranchName)
 - stage: Test
   jobs:
   - job: 'Three'
