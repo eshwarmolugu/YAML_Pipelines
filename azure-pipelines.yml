@@ -24,7 +24,7 @@ stages:
           echo $(build.sourceBranchName)
 - stage: Test
   jobs:
-  - job: 'One'
+  - job: 'Two'
     steps:
     - task: Bash@3
       inputs:
