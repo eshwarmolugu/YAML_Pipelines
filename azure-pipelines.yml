@@ -24,7 +24,7 @@ stages:
           echo $(build.sourceBranchName)
 - stage: Test
   jobs:
-  - job: 'Two'
+  - job: 'Three'
     steps:
     - task: Bash@3
       inputs:
@@ -34,7 +34,7 @@ stages:
           echo 'Hello world'
 
   - job: 'Four'
-    dependsOn: 'Two'
+    dependsOn: 'Three'
     pool: server
     steps:
     - task: InvokeRESTAPI@1
