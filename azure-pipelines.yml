@@ -2,6 +2,7 @@ trigger:
 - master
 name: $(Date:yyyyMMdd)$(Rev:.r)
 stages:
+- stage: 
   jobs:
   - job: "One"
     steps:  
