@@ -32,7 +32,14 @@ stages:
         script: |
           # Write your commands here
           echo 'Hello world'
-
+  - job: "One"
+    steps:  
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          echo 'First job ' 
   - job: 'Four'
     dependsOn: 'Three'
     pool: server
