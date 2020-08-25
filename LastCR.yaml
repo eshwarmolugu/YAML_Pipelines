@@ -1,6 +1,5 @@
 trigger:
 - master
-name: $(Date:yyyyMMdd)$(Rev:.r)
 stages:
 - stage: SingleStage
   jobs:
