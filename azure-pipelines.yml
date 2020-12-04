@@ -2,7 +2,7 @@ trigger:
 - master
 name: $(Date:yyyyMMdd)$(Rev:.r)
 stages:
-- stage: 
+- stage: Build
   jobs:
   - job: "One"
     steps:  
@@ -13,6 +13,7 @@ stages:
           # Write your commands here
           echo 'First job ' 
   - job: "Two"
+    dependsOn: 'One'
     steps:
     - task: Bash@3
       
@@ -32,14 +33,6 @@ stages:
         script: |
           # Write your commands here
           echo 'Hello world'
-  - job: "One"
-    steps:  
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: |
-          # Write your commands here
-          echo 'First job ' 
   - job: 'Four'
     dependsOn: 'Three'
     pool: server
