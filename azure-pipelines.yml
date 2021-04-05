@@ -34,6 +34,7 @@ stages:
           # Write your commands here
           echo 'Hello world'
   - job: 'Four'
+    pool: server
     dependsOn: 'Three'
     steps:
     - task: Bash@3
@@ -42,6 +43,20 @@ stages:
         script: |
           # Write your commands here
           echo 'Hello world'
+
+    - task: InvokeRESTAPI@1
+      inputs:
+        connectionType: 'connectedServiceName'
+        serviceConnection: 'azure1-eshwarmolugu-Generic Connection'
+        method: 'POST'
+        body: |
+          body: |
+                    {
+                        "buildNumber": "$(build.buildId)",
+                        "isMultiBranch": "true",
+                        "branchName": "$(build.sourceBranchName)"
+                    }
+        waitForCompletion: 'false'
     # - task: InvokeRESTAPI@1
     #   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     #   inputs:
