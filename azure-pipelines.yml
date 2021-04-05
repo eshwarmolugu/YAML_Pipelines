@@ -37,19 +37,25 @@ stages:
     dependsOn: 'Three'
     pool: server
     steps:
-    - task: InvokeRESTAPI@1
-      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    - task: Bash@3
       inputs:
-        connectionType: 'connectedServiceName'
-        serviceConnection: 'empmolugu'
-        method: 'POST'
-        body: |
-          {
-              "buildNumber": "$(build.buildId)",
-              "isMultiBranch": "true",
-              "branchName": "$(build.sourceBranchName)"
-          }
-        waitForCompletion: 'true'
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          echo 'Hello world'
+    # - task: InvokeRESTAPI@1
+    #   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    #   inputs:
+    #     connectionType: 'connectedServiceName'
+    #     serviceConnection: 'empmolugu'
+    #     method: 'POST'
+    #     body: |
+    #       {
+    #           "buildNumber": "$(build.buildId)",
+    #           "isMultiBranch": "true",
+    #           "branchName": "$(build.sourceBranchName)"
+    #       }
+    #     waitForCompletion: 'true'
   - job: 'django_basic'
     dependsOn: 'Four'
   pool:
