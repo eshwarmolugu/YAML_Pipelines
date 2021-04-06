@@ -37,12 +37,12 @@ stages:
     pool: server
     dependsOn: 'Three'
     steps:
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: |
-          # Write your commands here
-          echo 'Hello world'
+    # - task: Bash@3
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       # Write your commands here
+    #       echo 'Hello world'
 
     - task: InvokeRESTAPI@1
       inputs:
