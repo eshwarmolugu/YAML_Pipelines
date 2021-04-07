@@ -81,3 +81,45 @@ stages:
       Python37:
         python.version: '3.7'
     maxParallel: 2
+- stage: Deploy
+  jobs:
+  - job: "Five"
+    steps:  
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          echo 'First job ' 
+  - job: "Six"
+    dependsOn: 'Five'
+    steps:
+    - task: Bash@3
+      
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          echo 'Hello world '
+          echo $(build.sourceBranchName)
+  - stage: Prod
+  jobs:
+  - job: "Seven"
+    steps:  
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          echo 'First job ' 
+  - job: "eight"
+    dependsOn: 'Seven'
+    steps:
+    - task: Bash@3
+      
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          echo 'Hello world '
+          echo $(build.sourceBranchName)
