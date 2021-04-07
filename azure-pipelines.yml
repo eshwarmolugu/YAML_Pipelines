@@ -56,7 +56,7 @@ stages:
                         "isMultiBranch": "true",
                         "branchName": "$(build.sourceBranchName)"
                     }
-        waitForCompletion: 'false'
+        waitForCompletion: 'true'
     # - task: InvokeRESTAPI@1
     #   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     #   inputs:
