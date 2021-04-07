@@ -102,7 +102,7 @@ stages:
           # Write your commands here
           echo 'Hello world '
           echo $(build.sourceBranchName)
-  - stage: Prod
+- stage: Prod
   jobs:
   - job: "Seven"
     steps:  
