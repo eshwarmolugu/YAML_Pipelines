@@ -4,122 +4,34 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 stages:
 - stage: Build
   jobs:
-  - job: "One"
+  - job: "j1"
     steps:  
     - task: Bash@3
       inputs:
         targetType: 'inline'
         script: |
           # Write your commands here
-          echo 'First job ' 
-  - job: "Two"
-    dependsOn: 'One'
-    steps:
-    - task: Bash@3
-      
-      inputs:
-        targetType: 'inline'
-        script: |
-          # Write your commands here
-          echo 'Hello world '
-          echo $(build.sourceBranchName)
+          echo 'First job j1' 
+  
 - stage: Test
   jobs:
-  - job: 'Three'
+  - job: 'j2'
     steps:
     - task: Bash@3
       inputs:
         targetType: 'inline'
         script: |
           # Write your commands here
-          echo 'Hello world'
-  - job: 'Four'
-    pool: server
-    dependsOn: 'Three'
-    steps:
-    # - task: Bash@3
-    #   inputs:
-    #     targetType: 'inline'
-    #     script: |
-    #       # Write your commands here
-    #       echo 'Hello world'
-
-    - task: InvokeRESTAPI@1
-      inputs:
-        connectionType: 'connectedServiceName'
-        serviceConnection: 'azure1-eshwarmolugu-Generic Connection'
-        method: 'POST'
-        body: |
-          body: |
-                    {
-                        "buildNumber": "$(build.buildId)",
-                        "isMultiBranch": "true",
-                        "branchName": "$(build.sourceBranchName)"
-                    }
-        waitForCompletion: 'true'
-    # - task: InvokeRESTAPI@1
-    #   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    #   inputs:
-    #     connectionType: 'connectedServiceName'
-    #     serviceConnection: 'empmolugu'
-    #     method: 'POST'
-    #     body: |
-    #       {
-    #           "buildNumber": "$(build.buildId)",
-    #           "isMultiBranch": "true",
-    #           "branchName": "$(build.sourceBranchName)"
-    #       }
-    #     waitForCompletion: 'true'
-  - job: 'django_basic'
-    dependsOn: 'Four'
-  pool:
-    vmImage: 'Ubuntu-16.04'
-    strategy:
-    matrix:
-      Python36:
-        python.version: '3.6'
-      Python37:
-        python.version: '3.7'
-    maxParallel: 2
+          echo 'Job j2 '
+ 
 - stage: Deploy
   jobs:
-  - job: "Five"
+  - job: "j3"
     steps:  
     - task: Bash@3
       inputs:
         targetType: 'inline'
         script: |
           # Write your commands here
-          echo 'First job ' 
-  - job: "Six"
-    dependsOn: 'Five'
-    steps:
-    - task: Bash@3
-      
-      inputs:
-        targetType: 'inline'
-        script: |
-          # Write your commands here
-          echo 'Hello world '
-          echo $(build.sourceBranchName)
-- stage: Prod
-  jobs:
-  - job: "Seven"
-    steps:  
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: |
-          # Write your commands here
-          echo 'First job ' 
-  - job: "eight"
-    dependsOn: 'Seven'
-    steps:
-    - task: Bash@3
-      
-      inputs:
-        targetType: 'inline'
-        script: |
-          # Write your commands here
-          echo 'Hello world '
-          echo $(build.sourceBranchName)
+          echo 'Job j3 ' 
+  
