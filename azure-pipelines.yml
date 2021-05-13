@@ -4,7 +4,15 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 stages:
 - stage: Build
   jobs:
-  - job: "j1"
+  - job: "B1"
+    steps:  
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          echo 'First job j1' 
+  - job: "B2"
     steps:  
     - task: Bash@3
       inputs:
@@ -14,8 +22,9 @@ stages:
           echo 'First job j1' 
   
 - stage: Test
+  dependsOn:[]
   jobs:
-  - job: 'j2'
+  - job: 'T1'
     steps:
     - task: Bash@3
       inputs:
@@ -23,15 +32,13 @@ stages:
         script: |
           # Write your commands here
           echo 'Job j2 '
- 
-- stage: Deploy
-  jobs:
-  - job: "j3"
-    steps:  
+  - job: 'T2'
+    steps:
     - task: Bash@3
       inputs:
         targetType: 'inline'
         script: |
           # Write your commands here
-          echo 'Job j3 ' 
+          echo 'Job j2 '
+
   
