@@ -4,6 +4,7 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 stages:
 - stage: Build
   jobs:
+  
   - job: "B1"
     steps:  
     - task: Bash@3
@@ -12,6 +13,13 @@ stages:
         script: |
           # Write your commands here
           echo 'First job j1' 
+          
+  - job: "Delay"
+    pool: server
+    steps:
+    - task: Delay@1
+      inputs:
+        delayForMinutes: '0'
   - job: "B2"
     steps:  
     - task: Bash@3
