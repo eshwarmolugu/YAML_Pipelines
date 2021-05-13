@@ -22,7 +22,7 @@ stages:
           echo 'First job j1' 
   
 - stage: Test
-  dependsOn:[]
+  dependsOn: []
   jobs:
   - job: 'T1'
     steps:
