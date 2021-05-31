@@ -48,8 +48,6 @@ stages:
           # Write your commands here
           echo 'Job j2 '
 
-- stage: Test
-
 - stage: DeployUS1
   dependsOn: Test    # this stage runs after Test
 
