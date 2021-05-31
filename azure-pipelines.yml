@@ -4,7 +4,6 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 stages:
 - stage: Build
   jobs:
-  
   - job: "B1"
     steps:  
     - task: Bash@3
@@ -30,7 +29,7 @@ stages:
           echo 'First job j1' 
   
 - stage: Test
-  dependsOn: []
+  dependsOn: [Build]
   jobs:
   - job: 'T1'
     steps:
@@ -49,4 +48,16 @@ stages:
           # Write your commands here
           echo 'Job j2 '
 
+- stage: Test
+
+- stage: DeployUS1
+  dependsOn: Test    # this stage runs after Test
+
+- stage: DeployUS2
+  dependsOn: Test    # this stage runs in parallel with DeployUS1, after Test
+
+- stage: DeployEurope
+  dependsOn:         # this stage runs after DeployUS1 and DeployUS2
+  - DeployUS1
+  - DeployUS2
   
