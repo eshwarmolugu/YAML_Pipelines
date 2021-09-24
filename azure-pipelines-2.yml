@@ -91,7 +91,7 @@ stages:
         failOnStderr: true
 
 - stage: Prod
-  dependsOn: []
+  dependsOn: [Test]
   jobs:
   - job: 'P1'
     steps:
