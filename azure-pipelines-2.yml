@@ -20,12 +20,12 @@ stages:
   #   - task: ServiceNow-DevOps-Server-Change-Acceleration@1
   #     inputs:
   #       connectedServiceName: 'rerundev-eshwarmolugu-ServiceNow DevOps Service Connection'
-  - job: "Delay"
-    pool: server
-    steps:
-    - task: Delay@1
-      inputs:
-        delayForMinutes: '0'
+  # - job: "Delay"
+  #   pool: server
+  #   steps:
+  #   - task: Delay@1
+  #     inputs:
+  #       delayForMinutes: '0'
   - job: "B2"
     dependsOn: [Delay]
     steps:  
@@ -111,10 +111,11 @@ stages:
         script: |
           # Write your commands here
           echo 'Job j2 '
-  # - job: "P3"
-  #   dependsOn: ['P2']
-  #   pool: server
-  #   steps:  
-  #   - task: ServiceNow-DevOps-Server-Change-Acceleration@1
-  #     inputs:
-  #       connectedServiceName: 'rerundev-eshwarmolugu-ServiceNow DevOps Service Connection'
+  - job: "P3"
+    dependsOn: ['P2']
+    pool: server
+    steps:  
+    - task: ServiceNow-DevOps-Server-Change-Acceleration@1
+      inputs:
+        connectedServiceName: 'empbkaranam7-eshwarmolugu-ServiceNow DevOps Service Connection'
+        UpstreamJob: 'Delay'
