@@ -27,7 +27,6 @@ stages:
   #     inputs:
   #       delayForMinutes: '0'
   - job: "B2"
-    dependsOn: [Delay]
     steps:  
     - task: Bash@3
       inputs:
