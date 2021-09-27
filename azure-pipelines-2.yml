@@ -14,18 +14,6 @@ stages:
 
 - stage: Build
   jobs:   
-  # - job: "B1"
-  #   pool: server
-  #   steps:  
-  #   - task: ServiceNow-DevOps-Server-Change-Acceleration@1
-  #     inputs:
-  #       connectedServiceName: 'rerundev-eshwarmolugu-ServiceNow DevOps Service Connection'
-  # - job: "Delay"
-  #   pool: server
-  #   steps:
-  #   - task: Delay@1
-  #     inputs:
-  #       delayForMinutes: '0'
   - job: "B2"
     steps:  
     - task: Bash@3
@@ -45,6 +33,7 @@ stages:
       inputs:
         delayForMinutes: '0'
   - job: "Te1"
+    displayName: Wait For External Validation
     steps:  
     - task: Bash@3
       inputs:
@@ -53,65 +42,10 @@ stages:
           # Write your commands here
           echo 'First job TE1'
 
-  - job: 'T1'
-    steps:
-    - task: CmdLine@2
-      inputs:
-        script: |
-          echo TestJob1
-          echo $(System.JobAttempt)
-          
-          attempt=$(System.JobAttempt)
-          
-          if [ $((attempt%2)) -eq 0 ]
-          then
-            echo "Number is even." 
-          else
-            echo "Number is odd."
-            #1>&2
-          fi
-        failOnStderr: true
-  - job: 'T2'
-    steps:
-    - task: CmdLine@2
-      inputs:
-        script: |
-          echo TestJob2
-          echo $(System.JobAttempt)
-          
-          attempt=$(System.JobAttempt)
-          
-          if [ $((attempt%2)) -eq 0 ]
-          then
-            echo "Number is even." 
-          else
-            echo "Number is odd."
-            #1>&2
-          fi
-        failOnStderr: true
-
 - stage: Prod
   dependsOn: [Test]
   jobs:
-  - job: 'P1'
-    steps:
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: |
-          # Write your commands here
-          echo 'Job j2 '
-  - job: 'P2'
-    dependsOn: ['P1']
-    steps:
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: |
-          # Write your commands here
-          echo 'Job j2 '
   - job: "P3"
-    dependsOn: ['P2']
     pool: server
     steps:  
     - task: ServiceNow-DevOps-Server-Change-Acceleration@1
