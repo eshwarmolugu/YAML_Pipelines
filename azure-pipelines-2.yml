@@ -22,7 +22,42 @@ stages:
         script: |
           # Write your commands here
           echo 'First job j1' 
-  
+- stage: Test1
+  dependsOn: [Build]
+  jobs:
+  - job: "Delay1"
+    pool: server
+    steps:
+    - task: Delay@1
+      inputs:
+        delayForMinutes: '0'
+  - job: "Test1Job"
+    displayName: Wait For External Validation for Test1Job
+    steps:  
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          echo 'First job TE1'
+- stage: Test2
+  dependsOn: [Build]
+  jobs:
+  - job: "Delay2"
+    pool: server
+    steps:
+    - task: Delay@1
+      inputs:
+        delayForMinutes: '0'
+  - job: "Test2Job"
+    displayName: Wait For External Validation for Test2Job
+    steps:  
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          echo 'First job TE1'  
 - stage: Test
   dependsOn: [Build]
   jobs:
