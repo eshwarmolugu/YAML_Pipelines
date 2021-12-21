@@ -4,7 +4,7 @@
 # https://aka.ms/yaml     
 
 trigger:
-- dev
+- master
 
 pool:
   vmImage: ubuntu-latest
@@ -22,6 +22,12 @@ stages:
         script: |
           # Write your commands here
           echo 'First job j1' 
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFiles: '**/*.xml'
+        testResultsFormat: 'JUnit'
+        searchFolder: '$(System.DefaultWorkingDirectory)'
+        testRunTitle: 'Publish test results for Python $(python.version)'
 - stage: Test1
   dependsOn: [Build]
   jobs:
