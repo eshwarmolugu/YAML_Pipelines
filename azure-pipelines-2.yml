@@ -24,9 +24,8 @@ stages:
           echo 'First job j1' 
     - task: PublishTestResults@2
       inputs:
-        testResultsFiles: '**/*.xml'
         testResultsFormat: 'JUnit'
-        searchFolder: '$(System.DefaultWorkingDirectory)'
+        testResultsFiles: '**/*.xml'
         testRunTitle: 'Publish test results for Python $(python.version)'
 - stage: Test1
   dependsOn: [Build]
