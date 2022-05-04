@@ -1,0 +1,120 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: echo Hello, world!
+
+stages:
+- stage: Build
+jobs:
+- job: Build
+pool:
+name: Azure Pipelines
+steps:
+- script: Stage Build.
+
+ 
+- stage: DeployDEV
+dependsOn: Build
+jobs:
+- deployment: DEV
+displayName: Deploy Dev
+steps:
+- script: Stage DeployDEV.
+ 
+- stage: TestDEV
+dependsOn: DeployDEV
+jobs:
+- deployment: CDN_AutomatedTests
+displayName: Deploy DevAutomatedTest
+name: 'IOT Dev Private Agent Pool'
+steps:
+- script: Stage DeployDEV.
+
+
+- stage: DeployINT
+dependsOn: TestDEV
+jobs:
+- deployment: DeployINT
+displayName: Deploy Int
+steps:
+- script: Stage DeployINT.
+
+ 
+- stage: TestINT
+dependsOn: DeployINT
+jobs:
+- deployment: CDN_AutomatedTests
+displayName: Deploy IntAutomatedTest
+pool:
+name: 'IOT Int Private Agent Pool'
+steps:
+- script: Stage TestINT.
+ 
+- stage: DeployPRODServiceNowManualValidation
+dependsOn: TestINT
+jobs:
+- job: 'waitForValidation'
+displayName: Wait for external validation
+pool: server
+steps:
+- script: Stage DeployPRODServiceNowManualValidation.
+
+ 
+- stage: DeployPRODSnowApprovalCheck
+dependsOn: DeployPRODServiceNowManualValidation
+jobs:
+- job: 'approval'
+pool: server
+timeoutInMinutes: 4320 # job times out in 3 days
+# steps:
+# - task: ServiceNow-DevOps-Server-Change-Acceleration@1
+# inputs:
+# connectedServiceName: 'cat-Cat Digital-ServiceNow DevOps Service Connection'
+# UpstreamJob: 'ServiceNowManualValidation'
+# condition: true
+steps:
+- script: Stage DeployPRODSnowApprovalCheck.
+ 
+- stage: DeployPROD
+dependsOn: DeployPRODSnowApprovalCheck
+jobs:
+- deployment: DeployPROD
+displayName: Deploy Prod
+steps:
+- script: Stage DeployPROD.
+ 
+- stage: TestPROD
+dependsOn: DeployPROD
+jobs:
+- deployment: ProdCDN_AutomatedTests
+displayName: Deploy ProdAutomatedTest
+steps:
+- script: Stage TestPROD.
+
+
+
+- stage: RetainBuild
+dependsOn: TestPROD
+jobs:
+- job: 'retainBuild'
+displayName: Retain build for a year
+steps:
+- script: Stage RetainBuild.
+
+
+- stage: SecurityScan
+dependsOn: DeployDEV
+jobs:
+- deployment: FortifyScans
+displayName: Deploy FortifyScans
+steps:
+- script: Stage SecurityScan.
