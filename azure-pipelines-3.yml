@@ -14,7 +14,7 @@ stages:
     jobs:
     - job: Build
       steps:
-      - script: 'Stage Build'.
+      - script: 'Stage Build'
 
   - stage: DeployDEV
     dependsOn: Build
