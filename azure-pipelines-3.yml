@@ -59,7 +59,7 @@ stages:
       displayName: Wait for external validation
       # pool: server
       steps:
-      - script: 'Stage DeployPRODServiceNowManualValidation.'
+      - script: echo Stage DeployPRODServiceNowManualValidation.
 
  
   - stage: DeployPRODSnowApprovalCheck
