@@ -65,17 +65,7 @@ stages:
   - stage: DeployPRODSnowApprovalCheck
     dependsOn: DeployPRODServiceNowManualValidation
     jobs:
-    - job: 'approval'
-      # pool: server
-      timeoutInMinutes: 4320 # job times out in 3 days
-      # steps:
-      # - task: ServiceNow-DevOps-Server-Change-Acceleration@1
-      # inputs:
-      # connectedServiceName: 'cat-Cat Digital-ServiceNow DevOps Service Connection'
-      # UpstreamJob: 'ServiceNowManualValidation'
-      # condition: true
-      steps:
-      - script: 'Stage DeployPRODSnowApprovalCheck.'
+    - job: approval
  
   - stage: DeployPROD
     dependsOn: DeployPRODSnowApprovalCheck
@@ -98,10 +88,9 @@ stages:
   - stage: RetainBuild
     dependsOn: TestPROD
     jobs:
-    - job: 'retainBuild'
-      displayName: 'Retain build for a year'
-      steps:
-      - script: 'Stage RetainBuild.''
+    - job: retainBuild
+      displayName: Retain build for a year
+
 
 
   - stage: SecurityScan
