@@ -75,7 +75,7 @@ stages:
       # UpstreamJob: 'ServiceNowManualValidation'
       # condition: true
       steps:
-      - script: 'Stage DeployPRODSnowApprovalCheck.''
+      - script: 'Stage DeployPRODSnowApprovalCheck.'
  
   - stage: DeployPROD
     dependsOn: DeployPRODSnowApprovalCheck
