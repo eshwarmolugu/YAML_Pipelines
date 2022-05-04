@@ -14,7 +14,7 @@ stages:
     jobs:
     - job: Build
       steps:
-      - script: Stage Build.
+      - script: 'Stage Build'.
 
   - stage: DeployDEV
     dependsOn: Build
@@ -59,7 +59,7 @@ stages:
       displayName: Wait for external validation
       # pool: server
       steps:
-      - script: Stage DeployPRODServiceNowManualValidation.
+      - script: 'Stage DeployPRODServiceNowManualValidation.''
 
  
   - stage: DeployPRODSnowApprovalCheck
@@ -75,7 +75,7 @@ stages:
       # UpstreamJob: 'ServiceNowManualValidation'
       # condition: true
       steps:
-      - script: Stage DeployPRODSnowApprovalCheck.
+      - script: 'Stage DeployPRODSnowApprovalCheck.''
  
   - stage: DeployPROD
     dependsOn: DeployPRODSnowApprovalCheck
@@ -99,9 +99,9 @@ stages:
     dependsOn: TestPROD
     jobs:
     - job: 'retainBuild'
-      displayName: Retain build for a year
+      displayName: 'Retain build for a year'
       steps:
-      - script: Stage RetainBuild.
+      - script: 'Stage RetainBuild.''
 
 
   - stage: SecurityScan
