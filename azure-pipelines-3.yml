@@ -59,13 +59,14 @@ stages:
       displayName: Wait for external validation
       # pool: server
       steps:
-      - script: 'Stage DeployPRODServiceNowManualValidation.''
+      - script: 'Stage DeployPRODServiceNowManualValidation.'
 
  
   - stage: DeployPRODSnowApprovalCheck
     dependsOn: DeployPRODServiceNowManualValidation
     jobs:
     - job: approval
+      displayName: DeployPRODSnowApprovalCheck
  
   - stage: DeployPROD
     dependsOn: DeployPRODSnowApprovalCheck
