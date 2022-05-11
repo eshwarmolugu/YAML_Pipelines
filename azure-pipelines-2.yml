@@ -101,7 +101,8 @@ stages:
                               "description": "test descri",
                               "cab_required": true,
                               "work_notes": "test work",
-                              "assignment_group": "a715cd759f2002002920bde8132e7018"
+                              "assignment_group": "a715cd759f2002002920bde8132e7018",
+                              "cmdb_ci": "b4fd7c8437201000deeabfc8bcbe5dc1"
                             },
                             "setCloseCode": false
                             
