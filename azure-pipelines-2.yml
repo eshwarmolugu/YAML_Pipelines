@@ -90,5 +90,20 @@ stages:
     steps:  
     - task: ServiceNow-DevOps-Server-Change-Acceleration@1
       inputs:
-        connectedServiceName: 'empbkaranam7-eshwarmolugu-ServiceNow DevOps Service Connection'
-        UpstreamJob: 'Delay'
+        connectedServiceName: 'emprroy1-eshwarmolugu-ServiceNow DevOps Service Connection'
+        changeRequestDetails: |
+          {
+                            "attributes": {
+                              "short_description" : "balu Test desc",
+                              "priority": "1",
+                              "start_date": "2021-02-05 08:00:00",
+                              "justification": "test just",
+                              "description": "test descri",
+                              "cab_required": true,
+                              "work_notes": "test work",
+                              "assignment_group": "a715cd759f2002002920bde8132e7018"
+                            },
+                            "setCloseCode": false
+                            
+                          }
+                
