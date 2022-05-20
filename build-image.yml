@@ -1,0 +1,111 @@
+parameters:
+  - name: DockerRegistry
+    type: string
+    default: anansiacrdev.azurecr.io
+  - name: ContainerRegistry
+    type: string
+    default: anansiacrdev
+  - name: DockerRepository
+    type: string
+  - name: Tag
+    type: string
+  - name: DockerFile
+    type: string
+  - name: CustomArg
+    type: string
+    default: ''
+  - name: TargetEnv
+    type: string
+  - name: TargetProject
+    type: string
+  - name: JobName
+    type: string
+
+jobs:
+  - job: 'BuildAndPushImage${{ parameters.JobName }}'
+    displayName: Build, Scan and Push ${{ parameters.DockerRepository }} image ${{ parameters.Tag }}
+#    condition: or(contains(variables['Build.SourceBranchName'], '${{ parameters.TargetProject }}'), eq(variables['Build.SourceBranchName'], '${{ parameters.TargetEnv }}'))
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: "3.x"
+          architecture: "x64"
+      - bash: |
+          DOCKER_TAG=v`python3 setup.py --version`
+          echo "##vso[task.setvariable variable=DOCKER_TAG]$DOCKER_TAG"
+        displayName: "Set DOCKER_TAG"
+      - task: DockerInstaller@0
+        displayName: Docker Installer
+        inputs:
+          dockerVersion: 19.03.12
+          releaseType: stable
+#      - task: Docker@2
+#        inputs:
+#          containerRegistry: ${{parameters.ContainerRegistry}}
+#          command: login
+#      - task: Docker@2
+#        inputs:
+#          containerRegistry: ${{ parameters.ContainerRegistry }}
+#          command: login
+      - script: |
+          export DOCKER_BUILDKIT=1
+        # docker build ${{ parameters.CustomArg }} -f ${{ parameters.DockerFile }} -t ${{ parameters.DockerRegistry }}/${{ parameters.DockerRepository }}:$DOCKER_TAG --cache-from ${{ parameters.DockerRegistry }}/${{ parameters.DockerRepository }}:${{ parameters.Tag }} --build-arg BUILDKIT_INLINE_CACHE=1 .
+        # docker tag ${{ parameters.DockerRegistry }}/${{ parameters.DockerRepository }}:$DOCKER_TAG ${{ parameters.DockerRegistry }}/${{ parameters.DockerRepository }}:$(DOCKER_TAG)_$(Build.BuildNumber)
+        # docker tag ${{ parameters.DockerRegistry }}/${{ parameters.DockerRepository }}:$DOCKER_TAG ${{ parameters.DockerRegistry }}/${{ parameters.DockerRepository }}:$(DOCKER_TAG)_$(Build.BuildNumber)_${{ parameters.Tag }}
+        # docker tag ${{ parameters.DockerRegistry }}/${{ parameters.DockerRepository }}:$DOCKER_TAG ${{ parameters.DockerRegistry }}/${{ parameters.DockerRepository }}:$(DOCKER_TAG)_${{ parameters.Tag }}
+        # docker tag ${{ parameters.DockerRegistry }}/${{ parameters.DockerRepository }}:$DOCKER_TAG ${{ parameters.DockerRegistry }}/${{ parameters.DockerRepository }}:${{ parameters.Tag }}
+        # docker tag ${{ parameters.DockerRegistry }}/${{ parameters.DockerRepository }}:$DOCKER_TAG ${{ parameters.DockerRegistry }}/${{ parameters.DockerRepository }}:latest
+        displayName: "Build the ${{ parameters.DockerRepository }} ${{ parameters.Tag }} image"
+      - task: ServiceNow-DevOps-Agent-Artifact-Registration@1
+        inputs:
+          connectedServiceName: 'bpsand-Anansi-ServiceNow DevOps Service Connection'
+          artifactsPayload: |
+            {          
+              "artifacts": [
+                  {
+                    "name": "${{ parameters.DockerRepository }}",
+                    "version": "$(DOCKER_TAG)_$(Build.BuildNumber)",
+                    "semanticVersion": "1.$(Build.BuildId).0",
+                    "repositoryName": "anansi"
+                  }
+              ]
+            }              
+      - task: ServiceNow-DevOps-Agent-Package-Registration@1
+        inputs:
+          connectedServiceName: 'bpsand-Anansi-ServiceNow DevOps Service Connection'
+          packageName: '${{ parameters.DockerRepository }}'
+          artifactsPayload: |
+            {
+                "name": "${{ parameters.DockerRepository }}",
+                "pipelineName": "$(Build.DefinitionName)",
+                "taskExecutionNumber": "$(Build.BuildId)",
+                "stageName" : "Build, Scan and Push ${{ parameters.DockerRepository }} image ${{ parameters.Tag }}",
+                "branchName": "$(Build.SourceBranch)",
+                "artifacts": [
+                    {
+                        "name": "${{ parameters.DockerRepository }}",                        
+                        "repositoryName": "anansi",
+                        "version": "$(DOCKER_TAG)_$(Build.BuildNumber)"
+                    }
+                ]
+            }
+                
+#      - template: /templates/run-aquascan.yml
+#        parameters:
+#          registry: ${{ parameters.DockerRegistry }}
+#          repository: ${{ parameters.DockerRepository }}
+#          tag: $(DOCKER_TAG)
+#          continueOnError: true
+#     - task: Docker@2
+#       displayName: Push image
+#        inputs:
+#          containerRegistry: ${{ parameters.ContainerRegistry }}
+#          repository: ${{ parameters.DockerRepository }}
+#          command: push
+#          tags: |
+#            latest
+#            $(DOCKER_TAG)
+#            $(DOCKER_TAG)_$(Build.BuildNumber)
+#            $(DOCKER_TAG)_$(Build.BuildNumber)_${{ parameters.Tag }}
+#            $(DOCKER_TAG)_${{ parameters.Tag }}
+#            ${{ parameters.Tag }}
