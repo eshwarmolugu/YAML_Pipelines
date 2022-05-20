@@ -30,36 +30,36 @@ jobs:
       JobName: SingleUserDev
       ContainerRegistry: ${{ parameters.ContainerRegistry }}
       DockerRegistry: ${{ parameters.DockerRegistry }}
-  - template: /deployment/pipelines/build-image.yml
-    parameters:
-      DockerRepository: web-frontend
-      DockerFile: deployment/images/web-frontend/web-frontend.Dockerfile
-      Tag: web-frontend
-      TargetEnv: ${{ parameters.TargetEnv }}
-      TargetProject: web
-      JobName: WebFrontend
-      ContainerRegistry: ${{ parameters.ContainerRegistry }}
-      DockerRegistry: ${{ parameters.DockerRegistry }}
-  - template: /deployment/pipelines/build-image.yml
-    parameters:
-      DockerRepository: web-backend
-      DockerFile: deployment/images/web-backend/django/django.Dockerfile
-      Tag: web-backend
-      TargetEnv: ${{ parameters.TargetEnv }}
-      TargetProject: web
-      JobName: WebBackend
-      ContainerRegistry: ${{ parameters.ContainerRegistry }}
-      DockerRegistry: ${{ parameters.DockerRegistry }}
-  - template: /deployment/pipelines/build-image.yml
-    parameters:
-      DockerRepository: web-websocket
-      DockerFile: deployment/images/web-backend/y-websocket/y-websocket.Dockerfile
-      Tag: web-websocket
-      TargetEnv: ${{ parameters.TargetEnv }}
-      TargetProject: web
-      JobName: WebWebsocket
-      ContainerRegistry: ${{ parameters.ContainerRegistry }}
-      DockerRegistry: ${{ parameters.DockerRegistry }}
+#   - template: /deployment/pipelines/build-image.yml
+#     parameters:
+#       DockerRepository: web-frontend
+#       DockerFile: deployment/images/web-frontend/web-frontend.Dockerfile
+#       Tag: web-frontend
+#       TargetEnv: ${{ parameters.TargetEnv }}
+#       TargetProject: web
+#       JobName: WebFrontend
+#       ContainerRegistry: ${{ parameters.ContainerRegistry }}
+#       DockerRegistry: ${{ parameters.DockerRegistry }}
+#   - template: /deployment/pipelines/build-image.yml
+#     parameters:
+#       DockerRepository: web-backend
+#       DockerFile: deployment/images/web-backend/django/django.Dockerfile
+#       Tag: web-backend
+#       TargetEnv: ${{ parameters.TargetEnv }}
+#       TargetProject: web
+#       JobName: WebBackend
+#       ContainerRegistry: ${{ parameters.ContainerRegistry }}
+#       DockerRegistry: ${{ parameters.DockerRegistry }}
+#   - template: /deployment/pipelines/build-image.yml
+#     parameters:
+#       DockerRepository: web-websocket
+#       DockerFile: deployment/images/web-backend/y-websocket/y-websocket.Dockerfile
+#       Tag: web-websocket
+#       TargetEnv: ${{ parameters.TargetEnv }}
+#       TargetProject: web
+#       JobName: WebWebsocket
+#       ContainerRegistry: ${{ parameters.ContainerRegistry }}
+#       DockerRegistry: ${{ parameters.DockerRegistry }}
  #- template: /deployment/pipelines/build-image.yml
  #  parameters:
  #    DockerRepository: anansi-docs
