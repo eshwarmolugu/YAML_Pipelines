@@ -11,7 +11,7 @@ pool:
 
 variables:
 - name: workItemsFilePath
-  value: $(Pipeline.Workspace)/CHANGELOG.md
+  value: "Thisfile"
 - name: pipelineTag
   value: release
 - name: serviceConnection
@@ -68,7 +68,7 @@ stages:
         steps:
           - task: ServiceNow-DevOps-Server-Change-Acceleration@1
             inputs:
-              connectedServiceName: 'bpsand-Anansi-ServiceNow DevOps Service Connection'
+              connectedServiceName: 'romekl11-eshwarmolugu-ServiceNow DevOps Service Connection'
               changeRequestDetails: |
                 {
                   "attributes": {
