@@ -56,39 +56,39 @@ jobs:
         # docker tag ${{ parameters.DockerRegistry }}/${{ parameters.DockerRepository }}:$DOCKER_TAG ${{ parameters.DockerRegistry }}/${{ parameters.DockerRepository }}:${{ parameters.Tag }}
         # docker tag ${{ parameters.DockerRegistry }}/${{ parameters.DockerRepository }}:$DOCKER_TAG ${{ parameters.DockerRegistry }}/${{ parameters.DockerRepository }}:latest
         displayName: "Build the ${{ parameters.DockerRepository }} ${{ parameters.Tag }} image"
-      - task: ServiceNow-DevOps-Agent-Artifact-Registration@1
-        inputs:
-          connectedServiceName: 'bpsand-Anansi-ServiceNow DevOps Service Connection'
-          artifactsPayload: |
-            {          
-              "artifacts": [
-                  {
-                    "name": "${{ parameters.DockerRepository }}",
-                    "version": "$(DOCKER_TAG)_$(Build.BuildNumber)",
-                    "semanticVersion": "1.$(Build.BuildId).0",
-                    "repositoryName": "anansi"
-                  }
-              ]
-            }              
-      - task: ServiceNow-DevOps-Agent-Package-Registration@1
-        inputs:
-          connectedServiceName: 'bpsand-Anansi-ServiceNow DevOps Service Connection'
-          packageName: '${{ parameters.DockerRepository }}'
-          artifactsPayload: |
-            {
-                "name": "${{ parameters.DockerRepository }}",
-                "pipelineName": "$(Build.DefinitionName)",
-                "taskExecutionNumber": "$(Build.BuildId)",
-                "stageName" : "Build, Scan and Push ${{ parameters.DockerRepository }} image ${{ parameters.Tag }}",
-                "branchName": "$(Build.SourceBranch)",
-                "artifacts": [
-                    {
-                        "name": "${{ parameters.DockerRepository }}",                        
-                        "repositoryName": "anansi",
-                        "version": "$(DOCKER_TAG)_$(Build.BuildNumber)"
-                    }
-                ]
-            }
+#       - task: ServiceNow-DevOps-Agent-Artifact-Registration@1
+#         inputs:
+#           connectedServiceName: 'bpsand-Anansi-ServiceNow DevOps Service Connection'
+#           artifactsPayload: |
+#             {          
+#               "artifacts": [
+#                   {
+#                     "name": "${{ parameters.DockerRepository }}",
+#                     "version": "$(DOCKER_TAG)_$(Build.BuildNumber)",
+#                     "semanticVersion": "1.$(Build.BuildId).0",
+#                     "repositoryName": "anansi"
+#                   }
+#               ]
+#             }              
+#       - task: ServiceNow-DevOps-Agent-Package-Registration@1
+#         inputs:
+#           connectedServiceName: 'bpsand-Anansi-ServiceNow DevOps Service Connection'
+#           packageName: '${{ parameters.DockerRepository }}'
+#           artifactsPayload: |
+#             {
+#                 "name": "${{ parameters.DockerRepository }}",
+#                 "pipelineName": "$(Build.DefinitionName)",
+#                 "taskExecutionNumber": "$(Build.BuildId)",
+#                 "stageName" : "Build, Scan and Push ${{ parameters.DockerRepository }} image ${{ parameters.Tag }}",
+#                 "branchName": "$(Build.SourceBranch)",
+#                 "artifacts": [
+#                     {
+#                         "name": "${{ parameters.DockerRepository }}",                        
+#                         "repositoryName": "anansi",
+#                         "version": "$(DOCKER_TAG)_$(Build.BuildNumber)"
+#                     }
+#                 ]
+#             }
                 
 #      - template: /templates/run-aquascan.yml
 #        parameters:
