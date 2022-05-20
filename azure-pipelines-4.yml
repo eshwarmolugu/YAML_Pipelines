@@ -1,0 +1,101 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+- name: workItemsFilePath
+  value: $(Pipeline.Workspace)/CHANGELOG.md
+- name: pipelineTag
+  value: release
+- name: serviceConnection
+  value: AnansiServiceNow
+
+stages:
+  - stage: PreBuild
+    jobs:
+      - template: /deployment/pipelines/build-image.yml
+        parameters:
+          DockerRepository: anansi-base
+          DockerFile: .devcontainer/Dockerfile
+          Tag: anansi-base
+          CustomArg: --target base
+          TargetEnv: prod
+          TargetProject: web
+          JobName: AnansiBase
+          ContainerRegistry: zneutlbn22iaccr
+          DockerRegistry: zneutlbn22iaccr.azurecr.io
+
+  - stage: IntermediateStagePostPreBuild
+    dependsOn: PreBuild  
+    jobs:
+      - job: IntermediateStagePostPreBuild
+        displayName: IntermediateStagePostPreBuild
+        steps:
+          - script: |
+              echo "INSIDE IntermediateStagePostPreBuild STAGE Post PreBuild" 
+
+  - stage: Build
+    dependsOn: IntermediateStagePostPreBuild  
+    jobs:
+      - template: /deployment/pipelines/build-all.yml
+        parameters:
+          TargetEnv: prod
+          ContainerRegistry: zneutlbn22iaccr
+          DockerRegistry: zneutlbn22iaccr.azurecr.io
+
+  - stage: IntermediateStagePostBuild
+    dependsOn: Build  
+    jobs:
+      - job: IntermediateStagePostBuild
+        displayName: IntermediateStagePostBuild
+        steps:
+          - script: |
+              echo "INSIDE IntermediateStagePostBuild STAGE Post Build" 
+
+  - stage: CreateChange
+    dependsOn: IntermediateStagePostBuild
+    jobs:
+      - job: 'CreateChangeRequest'
+        displayName: 'CreateChangeRequest'
+        pool: server        
+        steps:
+          - task: ServiceNow-DevOps-Server-Change-Acceleration@1
+            inputs:
+              connectedServiceName: 'bpsand-Anansi-ServiceNow DevOps Service Connection'
+              changeRequestDetails: |
+                {
+                  "attributes": {
+                    "justification": "Link to the associated pull request: [contstruct using variables here]",
+                    "requested_by": {
+                      "email": "$(Build.RequestedForEmail)"
+                    }
+                  }
+                }
+
+  - stage: Deploy
+    dependsOn: CreateChange  
+    jobs:
+      - job: close_cr
+        displayName: Close Change Request
+        steps:
+          - script: |
+              echo "INSIDE DEPLOY STAGE" 
+
+              
+  - stage: TagPipeline
+    dependsOn: Deploy
+    jobs:
+      - job: 'TagPipelineRun'
+        displayName: 'Add tag to pipeline run'
+        steps:
+          - checkout: none
+          - script: |
+              echo "##vso[build.addbuildtag]${{ variables.pipelineTag }}"
+
