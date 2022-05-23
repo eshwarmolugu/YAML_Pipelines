@@ -20,7 +20,7 @@ variables:
 stages:
   - stage: PreBuild
     jobs:
-      - template: /deployment/pipelines/build-image.yml
+      - template: build-image.yml
         parameters:
           DockerRepository: anansi-base
           DockerFile: .devcontainer/Dockerfile
@@ -44,7 +44,7 @@ stages:
   - stage: Build
     dependsOn: IntermediateStagePostPreBuild  
     jobs:
-      - template: /deployment/pipelines/build-all.yml
+      - template: build-all.yml
         parameters:
           TargetEnv: prod
           ContainerRegistry: zneutlbn22iaccr
