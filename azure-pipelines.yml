@@ -26,6 +26,30 @@ stages:
         targetType: 'inline'
         script: |
           # Write your commands here
+          echo 'First job j1'
+  - job: "B3"
+    steps:  
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          echo 'First job j1' 
+  - job: "B4"
+    steps:  
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          echo 'First job j1'
+  - job: "B5"
+    steps:  
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
           echo 'First job j1' 
   
 - stage: Test
