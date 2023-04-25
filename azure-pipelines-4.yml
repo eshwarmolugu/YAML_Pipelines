@@ -26,7 +26,7 @@ stages:
         steps:
           - task: ServiceNow-DevOps-Server-Change-Acceleration@1
             inputs:
-              connectedServiceName: 'romekl11-eshwarmolugu-ServiceNow DevOps Service Connection'
+              connectedServiceName: 'rohit1'
               isToken: false
 
 
