@@ -1,0 +1,202 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml     
+
+trigger:
+- dev
+
+pool:
+  vmImage: ubuntu-latest
+
+name: $(Date:yyyyMMdd)$(Rev:.r)
+stages:
+- stage: Build
+  jobs:   
+  # - job: "B1"
+  #   pool: server
+  #   steps:  
+  #   - task: ServiceNow-DevOps-Server-Change-Acceleration@1
+  #     inputs:
+  #       connectedServiceName: 'rerundev-eshwarmolugu-ServiceNow DevOps Service Connection'
+  - job: "Delay"
+    #dependsOn: [B2]
+    pool: server
+    steps:
+    - task: Delay@1
+      inputs:
+        delayForMinutes: '0'
+   
+  # - job: "B2"
+  #   dependsOn: [Delay]
+  #   pool: server
+  #   steps:  
+    # - task: Bash@3
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       # Write your commands here
+    #       echo 'First job j1' 
+
+    # - task: ServiceNow-DevOps-Server-Artifact-Registration@1
+    #   inputs:
+    #     connectedServiceName: 'em4-eshwarmolugu-ServiceNow DevOps Service Connection'
+    #     artifactRegistrationPayload: |
+    #       {
+    #          "artifacts": [
+    #             {
+    #                "name": "az-artifact1",
+    #                "version": "1.$(build.buildId)",
+    #                "semanticVersion": "1.$(build.buildId).0",
+    #                "repositoryName": "repo1"
+    #             },
+    #             {
+    #                "name": "az-artifact2",
+    #                "version": "1.$(build.buildId)",
+    #                "semanticVersion": "1.$(build.buildId).0",
+    #                "repositoryName": "repo2"
+    #             }
+    #          ],
+    #          "pipelineName": "$(system.teamProject)/$(build.definitionName)",
+    #          "taskExecutionNumber": "$(build.buildId)",
+    #          "stageName": "$(System.StageDisplayName)/$(system.jobDisplayName)",
+    #          "attemptNumber": "$(system.jobAttempt)",
+    #          "branchName": "$(build.sourceBranchName)"
+    #       }
+    #     artifactToolIdExists: false
+
+    # - task: ServiceNow-DevOps-Server-Package-Registration@1
+    #   inputs:
+    #     connectedServiceName: 'ngorlando8-eshwarmolugu-ServiceNow DevOps Service Connection'
+    #     packageRegistrationPayload: |
+    #       {
+    #           "name": "pkg$(build.buildId)",
+    #           "artifacts": [
+    #           {
+    #               "name": "az-artifact1",
+    #               "repositoryName": "repo1",
+    #               "version": "1.$(build.buildId)",
+    #               "pipelineName":"$(system.teamProject)/$(build.definitionName)",
+    #               "taskExecutionNumber":"$(build.buildId)",
+    #               "stageName":"$(System.StageDisplayName)/$(system.jobDisplayName)",
+    #               "branchName":"$(build.sourceBranchName)"
+    #           }],
+    #           "pipelineName":"$(system.teamProject)/$(build.definitionName)",
+    #           "taskExecutionNumber":"$(build.buildId)",
+    #           "stageName":"$(System.StageDisplayName)/$(system.jobDisplayName)",
+    #           "attemptNumber": "$(system.jobAttempt)",
+    #           "branchName":"$(build.sourceBranchName)"
+    #       }
+    #     artifactToolIdExists: false
+  
+- stage: Test
+  dependsOn: [Build]
+  jobs:
+  - job: "Delay"
+    #pool: server
+    steps:
+    - task: PublishTestResults@2
+      inputs:
+          testResultsFiles: '**/TEST-*.xml'
+          testResultsFormat: 'JUnit'
+          
+          #searchFolder: '$(System.DefaultWorkingDirectory)'
+          #testRunTitle: 'Publish test results for Python $(python.version)'
+    # - task: Maven@3
+    #   inputs:
+    #       mavenPomFile: 'pom.xml'
+    #       publishJUnitResults: true
+    #       testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    #       javaHomeOption: 'JDKVersion'
+    #       jdkVersionOption: '1.11'
+    #       mavenVersionOption: 'Default'
+    #       mavenOptions: '-Xmx3072m'
+    #       mavenAuthenticateFeed: false
+    #       effectivePomSkip: false
+    #       sqMavenPluginVersionChoice: 'latest'
+
+  - job: "Te1"
+    dependsOn: [Delay]
+    steps:  
+    # - task: ServiceNow-DevOps-Build-Sonar-Registration@1
+    #   inputs:
+    #     connectedServiceName: 'rome8kl-eshwarmolugu-ServiceNow DevOps Service Connection'
+    #     sonarProjectKey: 'AutomationProj1-donotdelete'
+    #     sonarInstanceUrl: 'http://sonarqube1.sndevops.xyz/'
+    - task: CmdLine@2
+      inputs:
+        script: |
+          echo TestJob1
+          echo $(System.JobAttempt)
+          
+          attempt=$(System.JobAttempt)
+
+            echo "Check for this task"  
+
+  - job: 'T1'
+    dependsOn: [Te1]
+    steps:
+    - task: CmdLine@2
+      inputs:
+        script: |
+          echo TestJob1
+          echo $(System.JobAttempt)
+          
+          attempt=$(System.JobAttempt)
+          
+          if [ $((attempt)) -eq 2 ]
+          then
+            echo "Number is even." 
+            #1>&2
+          fi
+          
+        failOnStderr: true
+  - job: 'T2'
+    dependsOn: [T1]
+    steps:
+    - task: CmdLine@2
+      inputs:
+        script: |
+          echo TestJob2
+          echo $(System.JobAttempt)
+          
+          attempt=$(System.JobAttempt)
+          
+          if [ $((attempt%2)) -eq 0 ]
+          then
+            echo "Number is even." 
+          else
+            echo "Number is odd."
+            #1>&2
+          fi
+        failOnStderr: true
+
+- stage: Prod
+  dependsOn: [Test]
+  jobs:
+  - job: 'P1'
+    steps:
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+           echo 'Job j2 '
+
+  - job: 'P2'
+    dependsOn: ['P1']
+    steps:
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          echo 'Job j2 '
+  - job: "P3"
+    dependsOn: ['P2']
+    pool: server
+    steps:  
+    - task: ServiceNow-DevOps-Server-Change-Acceleration@1
+      inputs:
+        connectedServiceName: 'venkata23-eshwarmolugu-ServiceNow DevOps Service Connection'
+        changeRequestDetails: '{ "setCloseCode" : true, "attributes": { "requested_by": { "name": "DevOps Integration User" }, "description":"Eshwar Test" } }'
